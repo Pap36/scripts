@@ -6,3 +6,6 @@ The `mesh` folder contains scrips formatting the Bluetooth Mesh Sample Data into
 
 # Download Manager
 The `download manager` folder contains scrips for organising all files in the `Downloads` folder on a Mac.
+
+# PDF Merger
+The `pdf merger` folder contains scrips for merging PDF files into a single PDF file.
