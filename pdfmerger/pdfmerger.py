@@ -26,8 +26,11 @@ def merge_pdfs(pdfs):
 
     # open the explorer and ask the user to select a folder and a name for the merged PDF
     path = asksaveasfilename(filetypes=[('PDF Files', '*.pdf')])
+    if path == '':
+        merger.close()
+        return
     merger.write(path)
-    merger.close()
+    merger.close()    
 
 # create a function which opens the merged PDF
 def open_merged_pdf():
