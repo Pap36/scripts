@@ -1,14 +1,5 @@
 from tkinter.filedialog import askopenfilenames, asksaveasfilename
 from pypdf import PdfMerger
-import os
-
-# create a function which checks if a file exists at the given path
-def file_exists(path):
-    try:
-        with open(path, 'r') as _:
-            return True
-    except FileNotFoundError as _:
-        return False
 
 # create a function to let the user select the pdfs to merge
 def pdfs_to_merge():
@@ -25,16 +16,12 @@ def merge_pdfs(pdfs):
         merger.append(pdf)
 
     # open the explorer and ask the user to select a folder and a name for the merged PDF
-    path = asksaveasfilename(filetypes=[('PDF Files', '*.pdf')])
-    if path == '':
+    path = asksaveasfilename(filetypes=[('PDF Files', '*.pdf')],initialfile='merged.pdf')
+    try:
+        merger.write(path)
+        merger.close()    
+    except:
         merger.close()
-        return
-    merger.write(path)
-    merger.close()    
-
-# create a function which opens the merged PDF
-def open_merged_pdf():
-    os.startfile('merged.pdf')
 
 if __name__ == '__main__':
     pdfs = pdfs_to_merge()
