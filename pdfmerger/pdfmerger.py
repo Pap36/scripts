@@ -25,4 +25,6 @@ def merge_pdfs(pdfs):
 
 if __name__ == '__main__':
     pdfs = pdfs_to_merge()
+    if len(pdfs) == 0:
+        exit()
     merge_pdfs(pdfs)
