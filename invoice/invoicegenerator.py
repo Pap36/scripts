@@ -1,0 +1,223 @@
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import json
+import sys, getopt
+from exchangeRate import get_exchange_rate
+import textwrap
+
+# get todays date in format dd/mm/yyyy
+from datetime import date, timedelta
+today = date.today()
+today = today.strftime("%d/%m/%Y")
+
+# get the date in a week from now
+a_week_from_now = date.today() + timedelta(days=30)
+
+# Get the args dict from the json
+with open('args.json') as f:
+    args = json.load(f)
+
+argsDict = {
+    "invoiceNo": "",
+    "invoiceSeries": "",
+    "invoiceDate": today,
+    "dueDate": a_week_from_now.strftime("%d/%m/%Y"),
+    "lang": "ro",
+    "qty": 1,
+    "client": "AoPS",
+    "exchange": "True"
+}
+
+# join the args values into a string separated by :
+keys = ":".join(args.values()) + ":"
+longopts = ("= ".join(args.keys()) + "=").split(" ")
+
+opts, args = getopt.getopt(sys.argv[1:], keys, longopts)
+
+optArgs = ['-' + x for x in keys.split(":")]
+longOptArgs = ['--' + x[:-1] for x in longopts]
+
+for opt, arg in opts:
+    print(opt, arg)
+    if opt in optArgs:
+        key = longopts[optArgs.index(opt)][:-1]
+        argsDict[key] = arg
+    elif opt in longOptArgs:
+        argsDict[opt[:-1]] = arg
+
+pdfmetrics.registerFont(TTFont('Verdana', 'Verdana.ttf'))
+
+# register verdana-bold as bold as well
+pdfmetrics.registerFont(TTFont('Verdana-Bold', 'Verdana Bold.ttf'))
+
+# First line centered: Invoice
+# Second line centered: Series and number
+# Third line: Date
+
+def updateHeight(currentHeight):
+    return currentHeight - 20
+
+
+def drawTest(coordX, coordY, text, alignRight = False, limit=None):
+    if limit == None:
+        if not alignRight:
+            canvas.drawString(coordX, coordY, text)
+        else:
+            canvas.drawRightString(coordX, coordY, text)
+        return
+    textToWrite = textwrap.wrap(text, limit)
+    for line in textToWrite:
+        if not alignRight:
+            canvas.drawString(coordX, coordY, line)
+        else:
+            canvas.drawRightString(coordX, coordY, line)
+        coordY = updateHeight(coordY)
+    return coordY
+
+
+height = 780
+
+lang = argsDict.get("lang")
+
+with open('provider.json') as f:
+    provider = json.load(f)
+
+with open('clients.json') as f:
+    client = json.load(f).get(argsDict.get("client"))
+
+title = lang == "ro" and "Factura" or "Invoice"
+series = lang == "ro" and "Seria" or "Series"
+number = lang == "ro" and "Număr" or "Number"
+invoiceDate = lang == "ro" and "Data facturării" or "Invoice date"
+dueDate = lang == "ro" and "Data scadentă" or "Due date"
+
+fileName = title + "_" + argsDict.get("invoiceSeries") + "_" + argsDict.get("invoiceNo") + "_" + argsDict.get("client") + ".pdf"
+
+canvas = Canvas(fileName)
+
+canvas.setFont("Verdana", 16)
+canvas.drawString(50, height, title)
+height = updateHeight(height)
+canvas.setFont("Verdana", 12)
+canvas.drawString(50, height, series + ": " + argsDict.get("invoiceSeries"))
+canvas.drawRightString(550, height, number + ": " + argsDict.get("invoiceNo"))
+height = updateHeight(height)
+canvas.drawString(50, height, invoiceDate + ": " + argsDict.get("invoiceDate"))
+canvas.drawRightString(550, height, dueDate + ": " + argsDict.get("dueDate"))
+height = updateHeight(height)
+
+# Line separator
+canvas.line(50, height, 550, height)
+height = updateHeight(height)
+
+
+def drawClientProvider(client, provider, height):
+    canvas.setFont("Verdana", 10)
+    currHeight = height
+    for key in provider.keys():
+        if key[-2:] == "-B":
+            canvas.setFont("Verdana-Bold", 10)
+        else:
+            canvas.setFont("Verdana", 10)
+        canvas.drawString(50, currHeight, provider.get(key))
+        currHeight = updateHeight(currHeight)
+
+    # Line separator
+    canvas.line(50, currHeight, 550, currHeight)
+    currHeight = updateHeight(currHeight)
+
+    for key in client.keys():
+        if key[-2:] == "-B":
+            canvas.setFont("Verdana-Bold", 10)
+        else:
+            canvas.setFont("Verdana", 10)
+        canvas.drawString(50, currHeight, client.get(key))
+        currHeight = updateHeight(currHeight)
+    # currHeight = height
+    
+    return currHeight
+
+height = drawClientProvider(client.get(lang), provider.get(lang), height)
+
+# Line separator
+canvas.line(50, height, 550, height)
+height = updateHeight(height)
+
+# Exchange Rate
+fromCurr = client.get("curr")
+toCurr = provider.get("curr")
+if (fromCurr != None and toCurr != None and argsDict.get("exchange") == "True"):
+    canvas.setFont("Verdana-Bold", 10)
+    exchange_rate = get_exchange_rate(fromCurr, toCurr)
+    canvas.drawString(50, height, "1 " + fromCurr + " = " + exchange_rate + " " + toCurr)
+    height = updateHeight(height)
+
+    # Line separator
+    canvas.line(50, height, 550, height)
+    height = updateHeight(height)
+else:
+    exchange_rate = 1
+
+leftOffset = 50
+canvas.setFont("Verdana-Bold", 12)
+itemKeys = client.get("item").get(lang)
+
+lowestHeight = height
+index = 0
+for key in itemKeys:
+    if index == 3:
+        leftOffset = 550
+    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, key, leftOffset == 550, 20))
+    # canvas.drawString(leftOffset, height, key)
+    leftOffset += 150
+    index += 1
+height = min(lowestHeight, updateHeight(height))
+
+leftOffset = 50
+quantity = argsDict.get("qty")
+canvas.setFont("Verdana", 10)
+index = 0
+for key in itemKeys:
+    if index == 3:
+        leftOffset = 550
+    value = client.get("item").get(lang).get(key)
+    if value == "-":
+        value = str(quantity)
+    
+    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, value, leftOffset == 550, 20))
+    # canvas.drawString(leftOffset, height,  value)
+    leftOffset += 150
+    index += 1
+
+height = min(lowestHeight, updateHeight(height))
+total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
+totalString = str(float(quantity) * float(client.get("item").get("en").get("Price").split(" ")[0])) + \
+    " " + client.get("curr")
+
+if argsDict.get("exchange") == "True":
+    totalString += " x " + str(exchange_rate) + " = " + str(total) + " " + provider.get("curr")
+
+canvas.setFont("Verdana-Bold", 12)
+canvas.drawRightString(550, height, "Total: " + totalString)
+height = updateHeight(height)
+
+# Line separator
+canvas.line(50, height, 550, height)
+height = updateHeight(height)
+
+# Payment details
+canvas.setFont("Verdana-Bold", 12)
+paymentDetails = provider.get("payment").get(lang)
+
+for key in paymentDetails.keys():
+    if key[-2:] == "-B":
+        canvas.setFont("Verdana-Bold", 10)
+    else:
+        canvas.setFont("Verdana", 10)
+    
+    canvas.drawString(50, height, paymentDetails.get(key))
+    height = updateHeight(height)
+
+canvas.save()
+

@@ -1,2 +1,6 @@
 /executii
 /slictesting
+/invoice/APIKEY.txt
+/invoice/__pycache__
+/invoice/*.json
+/invoice/*.pdf
