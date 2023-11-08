@@ -226,11 +226,11 @@ if exchange_fees:
     text = lang == "ro" and "Comision schimb valutar" or "Exchange fees"
     canvas.setFont("Verdana-Bold", 10)
     canvas.drawString(50, height, text)
-    canvas.drawRightString(550, height, str(round(float(finalTotal) - expectedTotal)) + " " + provider.get("curr"))
+    canvas.drawRightString(550, height, str(round(float(finalTotal) - expectedTotal, 2)) + " " + provider.get("curr"))
     height = updateHeight(height)
 
 total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
-exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal))) + " " + provider.get("curr") or ""
+exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal, 2))) + " " + provider.get("curr") or ""
 totalString = str(float(quantity) * float(client.get("item").get("en").get("Price").split(" ")[0])) + \
     " " + client.get("curr")
 
