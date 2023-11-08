@@ -1,3 +1,4 @@
+import math
 from reportlab.pdfgen.canvas import Canvas
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -18,6 +19,19 @@ a_week_from_now = date.today() + timedelta(days=30)
 with open('args.json') as f:
     args = json.load(f)
 
+
+helpMessage = '-h or --help for help\n' + \
+    '-n or --invoiceNo for invoice number\n' + \
+    '-s or --invoiceSeries for invoice series\n' + \
+    '-d or --invoiceDate for invoice date\n' + \
+    '-p or --dueDate for due date\n' + \
+    '-l or --lang for language\n' + \
+    '-q or --qty for quantity\n' + \
+    '-c or --client for client\n' + \
+    '-e or --exchange for exchange rate\n' + \
+    '-t or --total for total amount\n'
+
+
 argsDict = {
     "invoiceNo": "",
     "invoiceSeries": "",
@@ -26,13 +40,15 @@ argsDict = {
     "lang": "ro",
     "qty": 1,
     "client": "AoPS",
-    "exchange": "True"
+    "exchange": "True",
+    "total": ""
 }
 
 # join the args values into a string separated by :
-keys = ":".join(args.values()) + ":"
-longopts = ("= ".join(args.keys()) + "=").split(" ")
+keys = ":".join(args.values()) + ":h"
+longopts = ("= ".join(args.keys()) + "=").split(" ") + ["help"]
 
+# try:
 opts, args = getopt.getopt(sys.argv[1:], keys, longopts)
 
 optArgs = ['-' + x for x in keys.split(":")]
@@ -40,11 +56,17 @@ longOptArgs = ['--' + x[:-1] for x in longopts]
 
 for opt, arg in opts:
     print(opt, arg)
+    if opt in ("-h", "--help"):
+        print(helpMessage)
+        sys.exit()
     if opt in optArgs:
         key = longopts[optArgs.index(opt)][:-1]
         argsDict[key] = arg
     elif opt in longOptArgs:
         argsDict[opt[:-1]] = arg
+# except TypeError:
+#     print(helpMessage)
+#     sys.exit()
 
 pdfmetrics.registerFont(TTFont('Verdana', 'Verdana.ttf'))
 
@@ -86,7 +108,7 @@ with open('provider.json') as f:
 with open('clients.json') as f:
     client = json.load(f).get(argsDict.get("client"))
 
-title = lang == "ro" and "Factura" or "Invoice"
+title = lang == "ro" and "Factură" or "Invoice"
 series = lang == "ro" and "Seria" or "Series"
 number = lang == "ro" and "Număr" or "Number"
 invoiceDate = lang == "ro" and "Data facturării" or "Invoice date"
@@ -176,6 +198,14 @@ height = min(lowestHeight, updateHeight(height))
 
 leftOffset = 50
 quantity = argsDict.get("qty")
+expectedTotal = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
+finalTotal = expectedTotal
+exchange_fees = False
+if argsDict.get("total") != "":
+    finalTotal = argsDict.get("total")
+    if float(finalTotal) != expectedTotal:
+        exchange_fees = True
+
 canvas.setFont("Verdana", 10)
 index = 0
 for key in itemKeys:
@@ -191,12 +221,21 @@ for key in itemKeys:
     index += 1
 
 height = min(lowestHeight, updateHeight(height))
+
+if exchange_fees:
+    text = lang == "ro" and "Comision schimb valutar" or "Exchange fees"
+    canvas.setFont("Verdana-Bold", 10)
+    canvas.drawString(50, height, text)
+    canvas.drawRightString(550, height, str(round(float(finalTotal) - expectedTotal)) + " " + provider.get("curr"))
+    height = updateHeight(height)
+
 total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
+exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal))) + " " + provider.get("curr") or ""
 totalString = str(float(quantity) * float(client.get("item").get("en").get("Price").split(" ")[0])) + \
     " " + client.get("curr")
 
 if argsDict.get("exchange") == "True":
-    totalString += " x " + str(exchange_rate) + " = " + str(total) + " " + provider.get("curr")
+    totalString += " x " + str(exchange_rate) + exchangeString + " = " + str(finalTotal) + " " + provider.get("curr")
 
 canvas.setFont("Verdana-Bold", 12)
 canvas.drawRightString(550, height, "Total: " + totalString)
