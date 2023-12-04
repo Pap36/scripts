@@ -19,6 +19,7 @@ a_week_from_now = date.today() + timedelta(days=30)
 with open('args.json') as f:
     args = json.load(f)
 
+PRICE = "Preț Unitar (Price)"
 
 helpMessage = '-h or --help for help\n' + \
     '-n or --invoiceNo for invoice number\n' + \
@@ -108,20 +109,20 @@ with open('provider.json') as f:
 with open('clients.json') as f:
     client = json.load(f).get(argsDict.get("client"))
 
-title = lang == "ro" and "Factură" or "Invoice"
-series = lang == "ro" and "Seria" or "Series"
-number = lang == "ro" and "Număr" or "Number"
-invoiceDate = lang == "ro" and "Data facturării" or "Invoice date"
-dueDate = lang == "ro" and "Data scadentă" or "Due date"
+title = lang == "ro" and "Factură" or "Factură (Invoice)"
+series = lang == "ro" and "Seria" or "Seria (Prefix)"
+number = lang == "ro" and "Număr" or "Număr (Number)"
+invoiceDate = lang == "ro" and "Data facturării" or "Data facturării (Invoice date)"
+dueDate = lang == "ro" and "Data scadentă" or "Data scadentă (Due date)"
 
-fileName = title + "_" + argsDict.get("invoiceSeries") + "_" + argsDict.get("invoiceNo") + "_" + argsDict.get("client") + ".pdf"
+fileName = argsDict.get("invoiceSeries") + argsDict.get("invoiceNo") + "_" + argsDict.get("client") + ".pdf"
 
 canvas = Canvas(fileName)
 
-canvas.setFont("Verdana", 16)
+canvas.setFont("Verdana", 12)
 canvas.drawString(50, height, title)
 height = updateHeight(height)
-canvas.setFont("Verdana", 12)
+canvas.setFont("Verdana", 10)
 canvas.drawString(50, height, series + ": " + argsDict.get("invoiceSeries"))
 canvas.drawRightString(550, height, number + ": " + argsDict.get("invoiceNo"))
 height = updateHeight(height)
@@ -135,13 +136,13 @@ height = updateHeight(height)
 
 
 def drawClientProvider(client, provider, height):
-    canvas.setFont("Verdana", 10)
+    canvas.setFont("Verdana", 8)
     currHeight = height
     for key in provider.keys():
         if key[-2:] == "-B":
-            canvas.setFont("Verdana-Bold", 10)
+            canvas.setFont("Verdana-Bold", 8)
         else:
-            canvas.setFont("Verdana", 10)
+            canvas.setFont("Verdana", 8)
         canvas.drawString(50, currHeight, provider.get(key))
         currHeight = updateHeight(currHeight)
 
@@ -151,9 +152,9 @@ def drawClientProvider(client, provider, height):
 
     for key in client.keys():
         if key[-2:] == "-B":
-            canvas.setFont("Verdana-Bold", 10)
+            canvas.setFont("Verdana-Bold", 8)
         else:
-            canvas.setFont("Verdana", 10)
+            canvas.setFont("Verdana", 8)
         canvas.drawString(50, currHeight, client.get(key))
         currHeight = updateHeight(currHeight)
     # currHeight = height
@@ -170,7 +171,7 @@ height = updateHeight(height)
 fromCurr = client.get("curr")
 toCurr = provider.get("curr")
 if (fromCurr != None and toCurr != None and argsDict.get("exchange") == "True"):
-    canvas.setFont("Verdana-Bold", 10)
+    canvas.setFont("Verdana-Bold", 8)
     exchange_rate = get_exchange_rate(fromCurr, toCurr)
     canvas.drawString(50, height, "1 " + fromCurr + " = " + exchange_rate + " " + toCurr)
     height = updateHeight(height)
@@ -182,7 +183,7 @@ else:
     exchange_rate = 1
 
 leftOffset = 50
-canvas.setFont("Verdana-Bold", 12)
+canvas.setFont("Verdana-Bold", 8)
 itemKeys = client.get("item").get(lang)
 
 lowestHeight = height
@@ -190,7 +191,7 @@ index = 0
 for key in itemKeys:
     if index == 3:
         leftOffset = 550
-    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, key, leftOffset == 550, 20))
+    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, key, leftOffset == 550, 25))
     # canvas.drawString(leftOffset, height, key)
     leftOffset += 150
     index += 1
@@ -198,7 +199,7 @@ height = min(lowestHeight, updateHeight(height))
 
 leftOffset = 50
 quantity = argsDict.get("qty")
-expectedTotal = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
+expectedTotal = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get(PRICE).split(" ")[0]), 2)
 finalTotal = expectedTotal
 exchange_fees = False
 if argsDict.get("total") != "":
@@ -206,7 +207,7 @@ if argsDict.get("total") != "":
     if float(finalTotal) != expectedTotal:
         exchange_fees = True
 
-canvas.setFont("Verdana", 10)
+canvas.setFont("Verdana", 8)
 index = 0
 for key in itemKeys:
     if index == 3:
@@ -215,7 +216,7 @@ for key in itemKeys:
     if value == "-":
         value = str(quantity)
     
-    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, value, leftOffset == 550, 20))
+    lowestHeight = min(lowestHeight, drawTest(leftOffset, height, value, leftOffset == 550, 25))
     # canvas.drawString(leftOffset, height,  value)
     leftOffset += 150
     index += 1
@@ -224,20 +225,20 @@ height = min(lowestHeight, updateHeight(height))
 
 if exchange_fees:
     text = lang == "ro" and "Comision schimb valutar" or "Exchange fees"
-    canvas.setFont("Verdana-Bold", 10)
+    canvas.setFont("Verdana-Bold", 8)
     canvas.drawString(50, height, text)
     canvas.drawRightString(550, height, str(round(float(finalTotal) - expectedTotal, 2)) + " " + provider.get("curr"))
     height = updateHeight(height)
 
-total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get("Price").split(" ")[0]), 2)
+total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get(PRICE).split(" ")[0]), 2)
 exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal, 2))) + " " + provider.get("curr") or ""
-totalString = str(float(quantity) * float(client.get("item").get("en").get("Price").split(" ")[0])) + \
+totalString = str(float(quantity) * float(client.get("item").get("en").get(PRICE).split(" ")[0])) + \
     " " + client.get("curr")
 
 if argsDict.get("exchange") == "True":
     totalString += " x " + str(exchange_rate) + exchangeString + " = " + str(finalTotal) + " " + provider.get("curr")
 
-canvas.setFont("Verdana-Bold", 12)
+canvas.setFont("Verdana-Bold", 8)
 canvas.drawRightString(550, height, "Total: " + totalString)
 height = updateHeight(height)
 
@@ -246,14 +247,14 @@ canvas.line(50, height, 550, height)
 height = updateHeight(height)
 
 # Payment details
-canvas.setFont("Verdana-Bold", 12)
+canvas.setFont("Verdana-Bold", 8)
 paymentDetails = provider.get("payment").get(lang)
 
 for key in paymentDetails.keys():
     if key[-2:] == "-B":
-        canvas.setFont("Verdana-Bold", 10)
+        canvas.setFont("Verdana-Bold", 8)
     else:
-        canvas.setFont("Verdana", 10)
+        canvas.setFont("Verdana", 8)
     
     canvas.drawString(50, height, paymentDetails.get(key))
     height = updateHeight(height)
