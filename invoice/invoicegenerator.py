@@ -29,7 +29,8 @@ helpMessage = '-h or --help for help\n' + \
     '-l or --lang for language\n' + \
     '-q or --qty for quantity\n' + \
     '-c or --client for client\n' + \
-    '-e or --exchange for exchange rate\n' + \
+    '-e or --exchange if to use exchange rate\n' + \
+    '-r or --exchangeRate to specify exchange rate\n' + \
     '-t or --total for total amount\n'
 
 
@@ -42,6 +43,7 @@ argsDict = {
     "qty": 1,
     "client": "AoPS",
     "exchange": "True",
+    "exchangeRate": "",
     "total": ""
 }
 
@@ -172,7 +174,7 @@ fromCurr = client.get("curr")
 toCurr = provider.get("curr")
 if (fromCurr != None and toCurr != None and argsDict.get("exchange") == "True"):
     canvas.setFont("Verdana-Bold", 8)
-    exchange_rate = get_exchange_rate(fromCurr, toCurr)
+    exchange_rate = argsDict.get("exchangeRate") if argsDict.get("exchangeRate") != "" else get_exchange_rate(fromCurr, toCurr)
     canvas.drawString(50, height, "1 " + fromCurr + " = " + exchange_rate + " " + toCurr)
     height = updateHeight(height)
 
