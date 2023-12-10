@@ -1,7 +1,5 @@
 from docx import Document
-from docx.shared import Pt
 from docx.enum.text import WD_PARAGRAPH_ALIGNMENT
-from docx.shared import Cm
 
 def add_column_paragraph(table, text, translation):
     # Add a new row to the table
