@@ -4,3 +4,5 @@
 /invoice/__pycache__
 /invoice/*.json
 /invoice/*.pdf
+/screenRecorder/recorded_actions.txt
+.DS_Store
