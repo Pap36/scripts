@@ -31,7 +31,8 @@ helpMessage = '-h or --help for help\n' + \
     '-c or --client for client\n' + \
     '-e or --exchange if to use exchange rate\n' + \
     '-r or --exchangeRate to specify exchange rate\n' + \
-    '-t or --total for total amount\n'
+    '-t or --total for total amount\n' + \
+    '-v or --provider for provider\n'
 
 
 argsDict = {
@@ -44,7 +45,8 @@ argsDict = {
     "client": "AoPS",
     "exchange": "True",
     "exchangeRate": "",
-    "total": ""
+    "total": "",
+    "provider": "Paul"
 }
 
 # join the args values into a string separated by :
@@ -106,7 +108,7 @@ height = 780
 lang = argsDict.get("lang")
 
 with open('provider.json') as f:
-    provider = json.load(f)
+    provider = json.load(f).get(argsDict.get("provider"))
 
 with open('clients.json') as f:
     client = json.load(f).get(argsDict.get("client"))
