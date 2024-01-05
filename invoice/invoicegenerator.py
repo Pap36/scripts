@@ -236,7 +236,8 @@ if exchange_fees:
 
 total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get(PRICE).split(" ")[0]), 2)
 exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal, 2))) + " " + provider.get("curr") or ""
-totalString = str(float(quantity) * float(client.get("item").get("en").get(PRICE).split(" ")[0])) + \
+totalSum = float(quantity) * float(client.get("item").get("en").get(PRICE).split(" ")[0])
+totalString = str(round(totalSum, 2)) + \
     " " + client.get("curr")
 
 if argsDict.get("exchange") == "True":
