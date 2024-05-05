@@ -47,7 +47,7 @@ def reproduce_actions(file_path, customFirstInput=None, secondFirstInput=None):
             prevTime = time
 
 
-for count in range(60, 105):
+for count in range(500):
     firstInput = str(count)[:2]
     secondInput = str(count)[2:]
     reproduce_actions('recorded_actions.txt', firstInput, secondInput)
