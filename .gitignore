@@ -6,3 +6,7 @@
 /invoice/*.pdf
 /screenRecorder/recorded_actions.txt
 .DS_Store
+pdfsplitter/CURSURI IPUE.pdf
+pdfsplitter/first.pdf
+pdfsplitter/output2.pdf
+pdfsplitter/second.pdf
