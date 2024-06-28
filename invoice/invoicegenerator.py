@@ -203,7 +203,13 @@ height = min(lowestHeight, updateHeight(height))
 
 leftOffset = 50
 quantity = argsDict.get("qty")
-expectedTotal = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get(PRICE).split(" ")[0]), 2)
+
+totalFunds = float(client.get("item").get("en").get(PRICE).split(" ")[0])
+bonus = 0
+if client.get("bonus") != None:
+    bonus = float(client.get("bonus").get("en").get(PRICE).split(" ")[0])
+
+expectedTotal = round((float(quantity) * totalFunds + bonus) * float(exchange_rate), 2)
 finalTotal = expectedTotal
 exchange_fees = False
 if argsDict.get("total") != "":
@@ -227,6 +233,21 @@ for key in itemKeys:
 
 height = min(lowestHeight, updateHeight(height))
 
+if client.get("bonus") != None:
+    index = 0
+    leftOffset = 50
+    for key in itemKeys:
+        if index == 3:
+            leftOffset = 550
+        value = client.get("bonus").get(lang).get(key)
+        print(value)
+        
+        lowestHeight = min(lowestHeight, drawTest(leftOffset, height, value, leftOffset == 550, 25))
+        leftOffset += 150
+        index += 1
+
+    height = min(lowestHeight, updateHeight(height))
+
 if exchange_fees:
     text = lang == "ro" and "Comision schimb valutar" or "Exchange fees"
     canvas.setFont("Verdana-Bold", 8)
@@ -234,9 +255,9 @@ if exchange_fees:
     canvas.drawRightString(550, height, str(round(float(finalTotal) - expectedTotal, 2)) + " " + provider.get("curr"))
     height = updateHeight(height)
 
-total = round(float(quantity) * float(exchange_rate) * float(client.get("item").get("en").get(PRICE).split(" ")[0]), 2)
+total = round((float(quantity) * totalFunds + bonus) * float(exchange_rate), 2)
 exchangeString = exchange_fees == True and " - " + str(abs(round(float(finalTotal) - expectedTotal, 2))) + " " + provider.get("curr") or ""
-totalSum = float(quantity) * float(client.get("item").get("en").get(PRICE).split(" ")[0])
+totalSum = float(quantity) * totalFunds + bonus
 totalString = str(round(totalSum, 2)) + \
     " " + client.get("curr")
 
