@@ -1,6 +1,7 @@
 import time
 from pynput.mouse import Listener as MouseListener
 from pynput.keyboard import Listener as KeyboardListener
+from pynput.keyboard import KeyCode
 
 def record_input():
     events = []
@@ -16,14 +17,17 @@ def record_input():
             click_count = 1
 
         last_click_position = (x, y)
+        if click_count == 1:
+            action = "Clicked" if pressed else "Released"
+            events.append(f"Move {int(x)} {int(y)} {time.time()}")
+            events.append(f"{action} {int(x)} {int(y)} {button} {click_count} {time.time()}")
+            print(f"{action} at ({x}, {y}) with {button}")
+        else:
+            events.pop()
+            events.append(f"Clicked {int(x)} {int(y)} {button} {click_count} {time.time()}")
 
-        action = "Clicked" if pressed else "Released"
-        events.append(f"Move {int(x)} {int(y)} {time.time()}")
-        events.append(f"{action} {int(x)} {int(y)} {button} {time.time()}")
-        print(f"{action} at ({x}, {y}) with {button}")
-
-        if click_count >= 3:
-            stop_recording()
+        # if click_count >= 3:
+        #     stop_recording()
 
     def on_scroll(x, y, dx, dy):
         events.append(f"Move {int(x)} {int(y)} {time.time()}")
@@ -37,7 +41,18 @@ def record_input():
             return str(key).split('.')[1].replace("'", "")
 
     def on_press(key):
-        events.append('Press ' + convertKey(key) + " " + str(time.time()))
+        if key == KeyCode.from_char('q'):
+            stop_recording()
+        elif key == '\\x03':
+            events.append('Copy ' + str(time.time()))
+        elif key == '\\x16':
+            events.append('Paste ' + str(time.time()))
+        elif key == KeyCode.from_char('c') and events[-1].split()[0] == 'Press' and events[-1].split()[1] == 'cmd':
+            events.append('Copy ' + str(time.time()))
+        elif key == KeyCode.from_char('v') and events[-1].split()[0] == 'Press' and events[-1].split()[1] == 'cmd':
+            events.append('Paste ' + str(time.time()))
+        else: 
+            events.append('Press ' + convertKey(key) + " " + str(time.time()))
         print(f"Press {key}")
 
     def on_release(key):
