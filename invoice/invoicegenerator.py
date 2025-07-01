@@ -35,7 +35,8 @@ helpMessage = '-h or --help for help\n' + \
     '-e or --exchange if to use exchange rate\n' + \
     '-r or --exchangeRate to specify exchange rate\n' + \
     '-t or --total for total amount\n' + \
-    '-v or --provider for provider\n'
+    '-v or --provider for provider\n' + \
+    '-b or --bonus whether to include bonus\n'
 
 
 argsDict = {
@@ -49,7 +50,8 @@ argsDict = {
     "exchange": "True",
     "exchangeRate": "",
     "total": "",
-    "provider": "Paul"
+    "provider": "Paul",
+    "bonus": False,
 }
 
 # join the args values into a string separated by :
@@ -214,7 +216,8 @@ quantity = argsDict.get("qty")
 
 totalFunds = float(client.get("item").get("en").get(PRICE).split(" ")[0])
 bonus = 0
-if client.get("bonus") != None:
+print("Bonus: ", argsDict.get("bonus"))
+if client.get("bonus") != None and argsDict.get("bonus"):
     bonus = float(client.get("bonus").get("en").get(PRICE).split(" ")[0])
 
 expectedTotal = round((float(quantity) * totalFunds + bonus) * float(exchange_rate), roundingPrecision)
@@ -241,7 +244,7 @@ for key in itemKeys:
 
 height = min(lowestHeight, updateHeight(height))
 
-if client.get("bonus") != None:
+if client.get("bonus") != None and argsDict.get("bonus"):
     index = 0
     leftOffset = 50
     for key in itemKeys:
