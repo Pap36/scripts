@@ -1,0 +1,41 @@
+# Swift Package Manager build artifacts
+.build/
+.swiftpm/
+
+# Xcode / Derived Data (if opened in Xcode)
+DerivedData/
+xcuserdata/
+*.xcworkspace/
+
+# App bundle output
+/dist/
+
+# Installed app copies (user Applications)
+/InvoiceApp.app
+
+# Icon intermediate artifacts
+Packaging/AppIcon.iconset/
+Packaging/AppIcon.png
+
+# Generated icns can be rebuilt; keep svg source
+# (Comment out next line if you want to version the final icns)
+Packaging/AppIcon.icns
+
+# Local build number auto-increment file (recreated automatically)
+BUILD_NUMBER
+
+# Temporary files
+*.swp
+*.tmp
+.DS_Store
+
+# Logs
+*.log
+
+# VSCode / Editor
+.vscode/
+*.code-workspace
+
+# Python cache if any stray scripts appear
+__pycache__/
+*.pyc

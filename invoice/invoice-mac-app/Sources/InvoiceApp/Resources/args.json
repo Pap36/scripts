@@ -1,0 +1,14 @@
+{
+	"invoiceNo": "n",
+	"invoiceSeries": "s",
+	"invoiceDate": "d",
+	"dueDate": "p",
+	"lang": "l",
+	"qty": "q",
+	"client": "c",
+	"exchange": "e",
+	"exchangeRate": "r",
+	"total": "t",
+	"provider": "v",
+	"bonus": "b"
+}

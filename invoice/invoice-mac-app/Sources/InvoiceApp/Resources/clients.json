@@ -1,0 +1,119 @@
+{
+	"AoPS": {
+		"ro": {
+			"Rol-B": "Client:",
+			"Client": "AoPS Incorporated",
+			"Adresă": "10865 Rancho Bernardo Rd, STE 100",
+			"Oraș": "San Diego",
+			"Țară": "Statele Unite ale Americii",
+			"Cod poștal": "CA 92127"
+		},
+		"en": {
+			"Role-B": "Client:",
+			"Client": "AoPS Incorporated",
+			"Address": "10865 Rancho Bernardo Rd, STE 100",
+			"City": "San Diego",
+			"Country": "United States of America",
+			"Postal code": "CA 92127"
+		},
+		"curr": "USD",
+		"item": {
+			"ro": {
+				"Descriere": "Corectare + Feedback\n Cod Python",
+				"Preț unitar": "24 USD",
+				"Unitate": "1 oră",
+				"Cantitate": "-"
+			},
+			"en": {
+				"Description": "Releasing",
+				"Preț Unitar (Price)": "24 USD",
+				"Unit": "1 hour",
+				"Quantity": "-"
+			}
+		}
+	},
+	"Balloon": {
+		"ro": {
+			"Rol-B": "Client:",
+			"Client": "Springboard Applications Ltd",
+			"Adresă": "1000 Great West Road",
+			"Oraș": "Brentford",
+			"Țară": "Regatul Unit",
+			"Cod Poștal": "TW8 9DW",
+			"Cod Inregistrare": "Cod Inregistrare: 08619684",
+			"Ordin de plată": "Ordin de plată: 2000304"
+		},
+		"en": {
+			"Role-B": "Client (Client):",
+			"Client": "Springboard Applications Ltd",
+			"Adresă (Address)": "1000 Great West Road",
+			"Oraș (City)": "Brentford",
+			"Țară (Country)": "United Kingdom",
+			"Cod Poștal (Postal code)": "TW8 9DW",
+			"Cod Inregistrare (Registration number)": "Cod Inregistrare (Registration number): 08619684",
+			"Ordin de plată (Payment order)": "Ordin de plată (Payment order): 2000304"
+		},
+		"curr": "GBP",
+		"item": {
+			"ro": {
+				"Descriere": "Prestare servicii de programare, React Native conform OP .",
+				"Preț Unitar": "23 GBP",
+				"Unitate": "1 oră",
+				"Cantitate": "-"
+			},
+			"en": {
+				"Descriere (Description)": "Prestare servicii de programare, React Native. (Mobile app development, React Native.)",
+				"Preț Unitar (Price)": "23 GBP",
+				"Unitate (Unit)": "1 oră (hour)",
+				"Cantitate (Quantity)": "-"
+			}
+		},
+		"bonus": {
+			"ro": {
+				"Descriere": "Costuri de deplasare pentru Q2 2025.",
+				"Preț Unitar": "247 GBP",
+				"Unitate": "1",
+				"Cantitate": "1"
+			},
+			"en": {
+				"Descriere (Description)": "Costuri de deplasare pentru Q2 2025. (Travel expenses for Q2 2025.)",
+				"Preț Unitar (Price)": "247 GBP",
+				"Unitate (Unit)": "1",
+				"Cantitate (Quantity)": "1"
+			}
+		}
+	},
+	"Iulia": {
+		"ro": {
+			"Rol-B": "Beneficiar:",
+			"Client": "Iulia Berea Cabinet de Avocat",
+			"Adresă": "Str. Nicolae Caramfil, Nr. 22, Et. 1, Ap. 103, Sector 3",
+			"Oraș": "București",
+			"Țară": "România",
+			"CIF": "CIF: RO33726361"
+		},
+		"en": {
+			"Rol-B": "Beneficiar:",
+			"Client": "Iulia Berea Cabinet de Avocat",
+			"Adresă": "Str. Nicolae Caramfil, Nr. 22, Et. 1, Ap. 103, Sector 3",
+			"Oraș": "București",
+			"Țară": "România",
+			"CIF": "CIF: RO33726361"
+		},
+		"curr": "RON",
+		"item": {
+			"ro": {
+				"Descriere": "Conform contractului de colaborare ",
+				"Preț Unitar": "5400 RON",
+				"Unitate": "1 lună",
+				"Cantitate": "-"
+			},
+			"en": {
+				"Descriere": "Conform contractului de colaborare ",
+				"Preț Unitar (Price)": "5400 RON",
+				"Unitate": "1 lună",
+				"Cantitate": "-"
+			}
+		}
+	}
+}

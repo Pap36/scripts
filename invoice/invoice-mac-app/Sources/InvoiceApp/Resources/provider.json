@@ -1,0 +1,123 @@
+{
+	"Paul": {
+		"ro": {
+			"Rol-B": "Furnizor:",
+			"Furnizor": "PEȚAN PAUL-ANDREI PERSOANĂ FIZICĂ AUTORIZATĂ",
+			"Adresă": "Str. Someșului, Nr. 18",
+			"Oraș": "Corunca, jud. Mureș",
+			"Țară": "România",
+			"Cod poștal": "547367",
+			"CUI": "CUI: 48981575",
+			"EUID": "EUID: ROONRC.F26/1365/2023"
+		},
+		"en": {
+			"Role-B": "Furnizor (Provider):",
+			"Provider": "PEȚAN PAUL-ANDREI PERSOANĂ FIZICĂ AUTORIZATĂ",
+			"Address": "Str. Someșului, Nr. 18",
+			"City": "Corunca, jud. Mureș",
+			"Country": "România",
+			"Zip": "547367",
+			"CUI": "CUI: 48981575",
+			"EUID": "EUID: ROONRC.F26/1365/2023"
+		},
+		"curr": "RON",
+		"payment": {
+			"ro": {
+				"Date plată-B": "Informații privind plata:",
+				"Banca": "Banca: Revolut Ltd",
+				"Adresă": "Adresă: 7 Westferry Circus, London, E14 4HD, United Kingdom",
+				"Titular Cont": "Titular Cont: Paul Petan",
+				"IBAN": "Numar de cont: 23527641",
+				"SWIFT/BIC": "Cod: 04-00-75"
+			},
+			"en": {
+				"Payment Information-B": "Informații privind plata (Payment information):",
+				"Bank": "Banca (Bank): Revolut Ltd",
+				"Address": "Adresă (Address): 7 Westferry Circus, London, E14 4HD, United Kingdom",
+				"Account Holder": "Beneficiar (Beneficiary): Paul Petan",
+				"Account Number": "Numar de cont (Account Number): 23527641",
+				"Sort Code": "Cod (Sort Code): 04-00-75"
+			}
+		}
+	},
+	"CTC": {
+		"ro": {
+			"Rol-B": "Furnizor:",
+			"Furnizor": "CORUNCA TECH CENTER SRL",
+			"Adresă": "Str. Someșului, Nr. 18",
+			"Oraș": "Corunca, jud. Mureș",
+			"Țară": "România",
+			"Cod poștal": "547367",
+			"CUI": "CUI: 51093829",
+			"EUID": "EUID: ROONRC.J2025000242001",
+			"Capital Social": "Capital Social: 200 RON"
+		},
+		"en": {
+			"Role-B": "Furnizor (Provider):",
+			"Provider": "CORUNCA TECH CENTER SRL",
+			"Address": "Str. Someșului, Nr. 18",
+			"City": "Corunca, jud. Mureș",
+			"Country": "România",
+			"Zip": "547367",
+			"CUI": "CUI: 51093829",
+			"EUID": "EUID: ROONRC.J2025000242001",
+			"Capital Social": "Capital Social: 200 RON"
+		},
+		"curr": "RON",
+		"payment": {
+			"ro": {
+				"Date plată-B": "Informații privind plata:",
+				"Banca": "Banca: Revolut Ltd",
+				"Adresă": "Adresă: 7 Westferry Circus, London, E14 4HD, United Kingdom",
+				"Titular Cont": "Titular Cont: CORUNCA TECH CENTER S. R. L.",
+				"Numar de cont": "Numar de cont: 74038923",
+				"Cod": "Cod: 04-29-09",
+				"IBAN": "IBAN: RO48REVO0000379785501218",
+				"SWIFT/BIC": "BIC: REVOROBB"
+			},
+			"en": {
+				"Payment Information-B": "Informații privind plata (Payment information):",
+				"Bank": "Banca (Bank): Revolut Ltd",
+				"Address": "Adresă (Address): 7 Westferry Circus, London, E14 4HD, United Kingdom",
+				"Account Holder": "Beneficiar (Beneficiary): CORUNCA TECH CENTER S. R. L.",
+				"Account Number": "Numar de cont (Account Number): 74038923",
+				"Sort Code": "Cod (Sort Code): 04-29-09",
+				"IBAN": "IBAN: RO48REVO0000379785501218",
+				"SWIFT/BIC": "BIC: REVOROBB"
+			}
+		}
+	},
+	"Sori": {
+		"ro": {
+			"Rol-B": "Colaborator:",
+			"Furnizor": "Andrada-Sorana Legian",
+			"Adresă": "Str. Serafim Duicu, Nr. 10",
+			"Oraș": "Târgu Mureș, jud. Mureș",
+			"Țară": "România",
+			"CUI": "CUI: 49202088"
+		},
+		"en": {
+			"Rol-B": "Colaborator:",
+			"Furnizor": "Andrada-Sorana Legian",
+			"Adresă": "Str. Serafim Duicu, Nr. 10",
+			"Oraș": "Târgu Mureș, jud. Mureș",
+			"Țară": "România",
+			"CUI": "CUI: 49202088"
+		},
+		"curr": "RON",
+		"payment": {
+			"ro": {
+				"Date plată-B": "Informații privind plata:",
+				"Banca": "Banca Transilvania",
+				"Titular Cont": "Titular Cont: Andrada-Sorana Legian",
+				"IBAN": "IBAN: RO47BTRLRONCRT0CP4764001"
+			},
+			"en": {
+				"Date plată-B": "Informații privind plata:",
+				"Banca": "Banca Transilvania",
+				"Titular Cont": "Titular Cont: Andrada-Sorana Legian",
+				"IBAN": "IBAN: RO47BTRLRONCRT0CP4764001"
+			}
+		}
+	}
+}

@@ -1,0 +1,22 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:invoice}/invoice-mac-app",
+      "name": "Debug InvoiceApp (invoice-mac-app)",
+      "program": "${workspaceFolder:invoice}/invoice-mac-app/.build/debug/InvoiceApp",
+      "preLaunchTask": "swift: Build Debug InvoiceApp (invoice-mac-app)"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:invoice}/invoice-mac-app",
+      "name": "Release InvoiceApp (invoice-mac-app)",
+      "program": "${workspaceFolder:invoice}/invoice-mac-app/.build/release/InvoiceApp",
+      "preLaunchTask": "swift: Build Release InvoiceApp (invoice-mac-app)"
+    }
+  ]
+}
