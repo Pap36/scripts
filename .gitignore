@@ -11,3 +11,15 @@ pdfsplitter/first.pdf
 pdfsplitter/output2.pdf
 pdfsplitter/second.pdf
 /invoice/invoice-mac-app/.build
+.venv/
+/.venv-paddleocr311
+.venv-paddleocr311/
+/financialStatements/data/*
+/financialStatements/uploads/*
+*/__pycache__/*
+/financialStatements/frontend/node_modules
+*.pyc
+*.db
+/financialStatements/app/uploads
+/financialStatements/pdfs
+/invoice
