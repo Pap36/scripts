@@ -29,6 +29,8 @@ from .schemas import (
     TransactionsListResponse,
 )
 
+# run with /Users/pap36/scripts/.venv/bin/python -m uvicorn app.main:app --reload --port 8000 --app-dir /Users/pap36/scripts/financialStatements
+
 app = FastAPI(title="Financial Statements API")
 
 app.add_middleware(
